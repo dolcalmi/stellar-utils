@@ -18,4 +18,9 @@ describe('lib', () => {
             return hasDupeKey;
         })).to.be.false;
     });
+
+    it('should expose BigNumber', () => {
+        expect(lib.BigNumber).to.exist;
+        expect(new lib.BigNumber(100).toString()).to.equal('100');
+    });
 });

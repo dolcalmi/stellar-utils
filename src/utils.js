@@ -1,3 +1,4 @@
+export {default as BigNumber} from 'bignumber.js';
 export * from './account';
 export * from './asset';
 export * from './payment';

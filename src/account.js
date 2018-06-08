@@ -83,3 +83,37 @@ export const createTestAccount = async () => {
 
     return keypair;
 };
+
+// const weights = {
+//     masterWeight: 1,
+//     lowThreshold: 2,
+//     medThreshold: 2,
+//     highThreshold: 2
+// }
+
+export const multiSig = async (secretKey, signers, weights) => {
+    const keypair = Keypair.fromSecret(secretKey);
+
+    const account = await loadAccount(keypair.publicKey());
+
+    const txb = new TransactionBuilder(account);
+
+    signers.forEach(({publicKey, weight}) => {
+        txb.addOperation(Operation.setOptions({
+            signer: {
+                ed25519PublicKey: publicKey,
+                weight: Number(weight)
+            }
+        }));
+    });
+
+    if (weights) {
+        txb.addOperation(Operation.setOptions(weights));
+    }
+
+    const transaction = txb.build();
+
+    transaction.sign(keypair);
+
+    return getServer().submitTransaction(transaction);
+};
