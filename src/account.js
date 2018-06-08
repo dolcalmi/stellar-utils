@@ -43,9 +43,9 @@ export const getBalance = (account, assetCode) => {
     return asset ? asset.balance : '0';
 };
 
-export const getMinBalance = account => {
+export const getMinBalance = (account, numTransactions = 1) => {
     const subentryCount = account.subentry_count;
-    const txFee = new BigNumber(100).times(0.0000001);
+    const txFee = new BigNumber(100).times(0.0000001).times(numTransactions);
     const minBalance = new BigNumber(1 + subentryCount * 0.5).plus(txFee);
     return minBalance.toString();
 };
