@@ -6,7 +6,7 @@ import {getServer} from './server';
 export const trustAsset = async (secretKey, asset, limit) => {
     const keypair = Keypair.fromSecret(secretKey);
 
-    const account = await loadAccount(keypair.secret());
+    const account = await loadAccount(keypair.publicKey());
 
     const transaction = new TransactionBuilder(account)
         .addOperation(Operation.changeTrust({
@@ -23,7 +23,7 @@ export const trustAsset = async (secretKey, asset, limit) => {
 export const setHomeDomain = async (secretKey, homeDomain) => {
     const keypair = Keypair.fromSecret(secretKey);
 
-    const account = await loadAccount(keypair.secret());
+    const account = await loadAccount(keypair.publicKey());
 
     const transaction = new TransactionBuilder(account)
         .addOperation(Operation.setOptions({
@@ -39,7 +39,7 @@ export const setHomeDomain = async (secretKey, homeDomain) => {
 export const lockAccount = async (secretKey) => {
     const keypair = Keypair.fromSecret(secretKey);
 
-    const account = await loadAccount(keypair.secret());
+    const account = await loadAccount(keypair.publicKey());
 
     const transaction = new TransactionBuilder(account)
         .addOperation(Operation.setOptions({
