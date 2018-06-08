@@ -1,14 +1,19 @@
 {
-  "name": "stellar-utils",
+  "name": "@pigzbe/stellar-utils",
   "version": "1.0.0",
   "description": "A collection of utilities for working with stellar",
   "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pigzbe/stellar-utils"
+  },
   "scripts": {
     "prepublish": "npm run lib",
     "lib": "rimraf lib && babel src --out-dir lib",
     "lint": "eslint 'src/**/*.js' --fix",
     "test": "yarn lint && mocha './test/*.test.js'",
-    "test:skip": "yarn lint && env SKIP_ASYNC=true mocha './test/*.test.js'"
+    "test:skip": "yarn lint && env SKIP_ASYNC=true mocha './test/*.test.js'",
+    "publish:public": "npm publish --access public"
   },
   "author": "Ian McGregor <ian@mcgregor.codes>",
   "license": "MIT",
