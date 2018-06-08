@@ -1,5 +1,7 @@
 # stellar-utils
 
+[![CircleCI](https://circleci.com/gh/pigzbe/stellar-utils.svg?style=svg)](https://circleci.com/gh/pigzbe/stellar-utils)
+
 A collection of utilities for working with [stellar](https://stellar.org).
 
 ## Installation
