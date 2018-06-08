@@ -1,0 +1,30 @@
+{
+  "name": "stellar-utils",
+  "version": "1.0.0",
+  "description": "A collection of utilities for working with stellar",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "npm run lib",
+    "lib": "rimraf lib && babel src --out-dir lib",
+    "lint": "eslint 'src/**/*.js' --fix",
+    "test": "yarn lint && mocha './test/*.test.js'",
+    "test:skip": "yarn lint && env SKIP_ASYNC=true mocha './test/*.test.js'"
+  },
+  "author": "Ian McGregor <ian@mcgregor.codes>",
+  "license": "MIT",
+  "dependencies": {
+    "@pigzbe/react-native-stellar-sdk": "^1.0.3",
+    "babel-preset-react-native": "^4.0.0",
+    "bignumber.js": "^7.2.1",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "stellar-sdk": "^0.8.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-env": "^1.7.0",
+    "eslint": "^4.19.1",
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
