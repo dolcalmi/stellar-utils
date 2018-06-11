@@ -2,23 +2,31 @@ import {Server, Network} from './sdk';
 
 let server = null;
 
-export const getServer = () => {
-    if (!server) {
-        setServer();
-    }
-    return server;
-};
-
-export const setServer = useTestnet => {
-    if (useTestnet) {
+const createServer = testnet => {
+    if (testnet) {
         Network.useTestNetwork();
     } else {
         Network.usePublicNetwork();
     }
 
-    const uri = useTestnet ? 'https://horizon-testnet.stellar.org' : 'https://horizon.stellar.org';
+    const uri = testnet ? 'https://horizon-testnet.stellar.org' : 'https://horizon.stellar.org';
 
     server = new Server(uri);
+
+    return server;
 };
+
+export const getServer = () => {
+    if (!server) {
+        createServer();
+    }
+    return server;
+};
+
+export const setServer = testnet => createServer(testnet);
+
+export const useTestnet = () => createServer(true);
+
+export const useMainnet = () => createServer(false);
 
 export const getServerURL = () => getServer().serverURL.href();

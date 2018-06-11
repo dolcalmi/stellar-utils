@@ -41,11 +41,11 @@ export const paymentInfo = async (payment, publicKey) => {
     };
 };
 
-export const paymentHistory = publicKey => {
+export const paymentHistory = (publicKey, limit = 100) => {
     return getServer().payments()
         .forAccount(publicKey)
         .order('desc')
-        .limit(100)
+        .limit(limit)
         .call()
         .then(payments => payments.records);
 };
