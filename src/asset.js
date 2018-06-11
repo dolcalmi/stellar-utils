@@ -60,7 +60,8 @@ export const createAsset = async (
     limit = '1000000',
     homeDomain = '',
     issuingSecret,
-    distributionSecret
+    distributionSecret,
+    cb = () => {}
 ) => {
     // Keys for accounts to issue and receive the new asset
 
@@ -72,11 +73,12 @@ export const createAsset = async (
     const asset = new Asset(code, issuingKeys.publicKey());
 
     // First, the receiving account must trust the asset
-
+    cb('Trusting asset');
     await trustAsset(distributionSecret, asset, limit);
 
     // Set the home domain on the issuing account
     if (homeDomain) {
+        cb('Setting home domain');
         await setHomeDomain(issuingSecret, homeDomain);
     }
 
@@ -88,11 +90,12 @@ export const createAsset = async (
     if (memo.length > 28) {
         memo = `Create ${code}`;
     }
-
+    cb('Sending payment');
     await sendPayment(issuingSecret, destination, limit, memo, asset);
 
     // Lock the issuing account
 
+    cb('Locking account');
     await lockAccount(issuingSecret);
 
     // Return asset
