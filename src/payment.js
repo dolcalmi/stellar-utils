@@ -58,6 +58,10 @@ export const sendPayment = async (
     asset = Asset.native()
 ) => {
 
+    if (typeof amount === 'number') {
+        amount = String(amount);
+    }
+
     const keypair = Keypair.fromSecret(fromSecret);
 
     const account = await getServer().loadAccount(keypair.publicKey());
