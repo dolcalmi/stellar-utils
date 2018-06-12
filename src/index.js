@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime';
 export * from './sdk';
 export * from './utils';
 export {default as utils} from './utils';
