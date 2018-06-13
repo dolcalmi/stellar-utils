@@ -11,12 +11,12 @@ const currentTime = () => new BigNumber(Math.floor(Date.now() / 1000));
 
 const tooSoon = tx => {
     const minTime = new BigNumber(tx.timeBounds.minTime);
-    return minTime.greaterThan(currentTime());
+    return minTime.isGreaterThan(currentTime());
 };
 
 export const loadTransaction = hash => getServer().transactions().transaction(hash).call();
 
-export const transactionResult = result => {
+export const transactionResultXDR = result => {
     return {
         envelope: xdr.TransactionEnvelope.fromXDR(result.envelope_xdr, 'base64'),
         result: xdr.TransactionResult.fromXDR(result.result_xdr, 'base64'),
@@ -37,22 +37,28 @@ export const validateTransaction = async xdr => {
     const transaction = fromXDR(xdr);
 
     const isTooSoon = tooSoon(transaction);
+    const isSigned = !!transaction.signatures.length;
+    const numOperations = transaction.operations.length;
 
-    if (isTooSoon) {
+    if (isTooSoon || !numOperations) {
         return {
             isValid: false,
             isExecuted: false,
             isTooSoon,
+            isSigned,
+            numOperations
         };
     }
 
-    const tx = await loadTransaction(txHash(tx));
+    const tx = await loadTransaction(txHash(transaction));
     const isExecuted = !!tx;
 
     return {
         isValid: !isExecuted,
         isExecuted,
         isTooSoon,
+        isSigned,
+        numOperations,
         txId: tx && tx.id || null
     };
 };

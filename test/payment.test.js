@@ -32,9 +32,6 @@ describe('payment', () => {
                 .then(tx => {
                     expect(tx).to.exist;
                     expect(tx.hash).to.be.a('string');
-                    // console.log( JSON.stringify(lib.xdr.TransactionEnvelope.fromXDR(tx.envelope_xdr, 'base64'), null, 2) );
-                    // console.log( JSON.stringify(lib.xdr.TransactionResult.fromXDR(tx.result_xdr, 'base64'), null, 2) );
-                    // console.log( JSON.stringify(lib.xdr.TransactionMeta.fromXDR(tx.result_meta_xdr, 'base64'), null, 2) );
                 });
         });
     }
