@@ -66,14 +66,18 @@ export const sendPayment = async (
 
     const account = await getServer().loadAccount(keypair.publicKey());
 
-    const transaction = new TransactionBuilder(account)
+    const txb = new TransactionBuilder(account)
         .addOperation(Operation.payment({
             destination,
             asset,
             amount
-        }))
-        .addMemo(Memo.text(memo))
-        .build();
+        }));
+
+    if (memo) {
+        txb.addMemo(Memo.text(memo));
+    }
+
+    const transaction = txb.build();
 
     transaction.sign(keypair);
 

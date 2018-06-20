@@ -1,10 +1,10 @@
 import {getServer} from './server';
-import {Keypair, Operation, TransactionBuilder} from './sdk';
+import {Keypair, Operation, TransactionBuilder, Memo} from './sdk';
 import BigNumber from 'bignumber.js';
 
 export const loadAccount = publicKey => getServer().loadAccount(publicKey);
 
-export const createAccount = async (fromSecret, destination, startingBalance) => {
+export const createAccount = async (fromSecret, destination, startingBalance, memo = '') => {
     const fundingKeys = Keypair.fromSecret(fromSecret);
 
     const fundingAccount = await loadAccount(fundingKeys.publicKey());
@@ -13,12 +13,17 @@ export const createAccount = async (fromSecret, destination, startingBalance) =>
         startingBalance = String(startingBalance);
     }
 
-    const transaction = new TransactionBuilder(fundingAccount)
+    const txb = new TransactionBuilder(fundingAccount)
         .addOperation(Operation.createAccount({
             destination,
             startingBalance
-        }))
-        .build();
+        }));
+
+    if (memo) {
+        txb.addMemo(Memo.text(memo));
+    }
+
+    const transaction = txb.build();
 
     transaction.sign(fundingKeys);
 
