@@ -54,7 +54,7 @@ export const sendPayment = async (
     fromSecret,
     destination,
     amount,
-    memo = '',
+    memo,
     asset = Asset.native()
 ) => {
 
@@ -73,8 +73,12 @@ export const sendPayment = async (
             amount
         }));
 
-    if (memo) {
+    if (memo && typeof memo === 'string') {
         txb.addMemo(Memo.text(memo));
+    }
+
+    if (memo && typeof memo === 'object') {
+        txb.addMemo(memo);
     }
 
     const transaction = txb.build();

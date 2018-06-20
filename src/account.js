@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 export const loadAccount = publicKey => getServer().loadAccount(publicKey);
 
-export const createAccount = async (fromSecret, destination, startingBalance, memo = '') => {
+export const createAccount = async (fromSecret, destination, startingBalance, memo) => {
     const fundingKeys = Keypair.fromSecret(fromSecret);
 
     const fundingAccount = await loadAccount(fundingKeys.publicKey());
@@ -19,8 +19,12 @@ export const createAccount = async (fromSecret, destination, startingBalance, me
             startingBalance
         }));
 
-    if (memo) {
+    if (memo && typeof memo === 'string') {
         txb.addMemo(Memo.text(memo));
+    }
+
+    if (memo && typeof memo === 'object') {
+        txb.addMemo(memo);
     }
 
     const transaction = txb.build();
